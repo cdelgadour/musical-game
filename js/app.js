@@ -10,6 +10,7 @@
 // 5. Activar timer
 // 6. activar star rating
 
+let correctPairs = 0;
 let firstCard, secondCard;
 let flippedCards = false;
  const imgElements = ["<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"accordion card-image\"></img>",
@@ -64,6 +65,17 @@ function cardValidation(cardOne, cardTwo){
   else {
     cardOne.classList.toggle("match", true);
     cardTwo.classList.toggle("match", true);
+    checkForEndGame();
+  }
+}
+
+function checkForEndGame() {
+  if (correctPairs === 7) {
+    alert("Great job!");
+    location.reload();
+  }
+  else {
+    correctPairs += 1;
   }
 }
 

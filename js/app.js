@@ -10,6 +10,9 @@
 // 5. Activar timer
 // 6. activar star rating
 
+const shinyStars = [...document.querySelectorAll(".fa.fa-star")];
+const moveDisplay = document.querySelector(".moves");
+let moves = 0;
 let correctPairs = 0;
 let firstCard, secondCard;
 let flippedCards = false;
@@ -51,8 +54,25 @@ function setImagesToCards() {
 //   }
 // }
 
+function updateMoveCounter() {
+  moves += 1;
+  moveDisplay.innerText = moves;
+  // shinyStars[0].style.visibility("hidden");
+  updateStarRating(moves);
+}
+
+function updateStarRating(moveNumber) {
+  if (moves == 20) {
+    shinyStars[2].style.visibility = "hidden";
+  }
+  else if (moves == 30) {
+    shinyStars[1].style.visibility = "hidden";
+  }
+}
+
 function flipCard(image) {
   image.classList.toggle("show",true);
+  updateMoveCounter();
 }
 
 function cardValidation(cardOne, cardTwo){

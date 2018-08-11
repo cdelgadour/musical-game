@@ -10,6 +10,9 @@
 // 5. Activar timer
 // 6. activar star rating
 
+let startTime = new Date();
+let timer = document.querySelector(".timer");
+const reloadButton = document.querySelector(".fa.fa-repeat");
 const shinyStars = [...document.querySelectorAll(".fa.fa-star")];
 const moveDisplay = document.querySelector(".moves");
 let moves = 0;
@@ -32,6 +35,7 @@ let flippedCards = false;
                    "<img src=\"img/piano.jpg\" alt=\"piano\" class=\"piano card-image\"></img>",
                    "<img src=\"img/trumpet.jpg\" alt=\"trumpet\" class=\"trumpet card-image\"></img>",
                    "<img src=\"img/trumpet.jpg\" alt=\"trumpet\" class=\"trumpet card-image\"></img>"];
+
 
 
 function setImagesToCards() {
@@ -59,7 +63,18 @@ function updateMoveCounter() {
   moveDisplay.innerText = moves;
   // shinyStars[0].style.visibility("hidden");
   updateStarRating(moves);
+  // timer.innerText = `Hello ${moves}`;
 }
+
+function updateTimer() {
+  var time = new Date();
+  var currentTime = Math.round((time-startTime)/1000)
+  timer.innerText = `Timer: ${currentTime} second(s)`;
+}
+
+window.setInterval(updateTimer, 1000);
+
+
 
 function updateStarRating(moveNumber) {
   if (moves == 20) {
@@ -110,6 +125,10 @@ setImagesToCards();
 
 const cardDeck = document.querySelector(".deck");
 // cardDeck.addEventListener("click", flipCard);
+
+reloadButton.addEventListener("click", function(){
+  location.reload();
+})
 
 cardDeck.addEventListener("click", function(evt){
   if (evt.target.nodeName.toLowerCase() === "li") {

@@ -3,17 +3,14 @@
  */
 
 // TODO:
-// 1. Transición para que se vea la segunda carta
-// 2. Modificar CardValidation en caso de que escoja la misma carta
-// 3. Desactivar cartas del juego
-// 4. Activar el move counter
-// 5. Activar timer
-// 6. activar star rating
+// 2. Randomize this!
+// 3. Viewports!!
 
 let startTime = new Date();
 let timer = document.querySelector(".timer");
 const reloadButton = document.querySelector(".fa.fa-repeat");
 const shinyStars = [...document.querySelectorAll(".fa.fa-star")];
+let starRating = "3 stars";
 const moveDisplay = document.querySelector(".moves");
 let moves = 0;
 let correctPairs = 0;
@@ -72,16 +69,16 @@ function updateTimer() {
   timer.innerText = `Timer: ${currentTime} second(s)`;
 }
 
-window.setInterval(updateTimer, 1000);
-
-
+let myTimer = window.setInterval(updateTimer, 1000);
 
 function updateStarRating(moveNumber) {
   if (moves == 20) {
     shinyStars[2].style.visibility = "hidden";
+    starRating = "2 stars";
   }
   else if (moves == 30) {
     shinyStars[1].style.visibility = "hidden";
+    starRating = "1 star";
   }
 }
 
@@ -94,8 +91,8 @@ function cardValidation(cardOne, cardTwo){
   let cardOneClass = cardOne.querySelector("img");
   let cardTwoClass = cardTwo.querySelector("img");
   if (cardOneClass.className != cardTwoClass.className) {
-    cardOne.classList.toggle("show", false);
-    cardTwo.classList.toggle("show", false);
+    setTimeout(function() {cardOne.classList.toggle("show", false);}, 1000);
+    setTimeout(function() {cardTwo.classList.toggle("show", false);}, 1000);
   }
   else {
     cardOne.classList.toggle("match", true);
@@ -104,11 +101,20 @@ function cardValidation(cardOne, cardTwo){
   }
 }
 
+function createEndScreen() {
+
+}
+
 function checkForEndGame() {
-  if (correctPairs === 7) {
-    alert("Great job!");
-    location.reload();
-  }
+  if (correctPairs === 2) {
+    clearInterval(myTimer);
+    const elapsedTime = Math.round((new Date() - startTime) / 1000);
+    setTimeout( function (){if (confirm(`Congratulations! Your time was ${elapsedTime} seconds. You made ${moves} moves!
+             You got ${starRating}!.
+             Want to play again?`)) {
+               location.reload();
+             }}, 1000);
+    }
   else {
     correctPairs += 1;
   }

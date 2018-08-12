@@ -3,7 +3,6 @@
  */
 
 // TODO:
-// 2. Randomize this!
 // 3. Viewports!!
 
 let startTime = new Date();
@@ -16,7 +15,7 @@ let moves = 0;
 let correctPairs = 0;
 let firstCard, secondCard;
 let flippedCards = false;
- const imgElements = ["<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"accordion card-image\"></img>",
+const imgElements = ["<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"accordion card-image\"></img>",
                    "<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"accordion card-image\"></img>",
                    "<img src=\"img/bongo.jpg\" alt=\"bongo\" class=\"bongo card-image\"></img>",
                    "<img src=\"img/bongo.jpg\" alt=\"bongo\" class=\"bongo card-image\"></img>",
@@ -33,7 +32,19 @@ let flippedCards = false;
                    "<img src=\"img/trumpet.jpg\" alt=\"trumpet\" class=\"trumpet card-image\"></img>",
                    "<img src=\"img/trumpet.jpg\" alt=\"trumpet\" class=\"trumpet card-image\"></img>"];
 
+function shuffleNodeList(array) {
+ /*Durstenfeld Shuffle
+ Credits to Scott and Lauren Holst from StackOverflow.com
+ https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array*/
+ for (let i = array.length - 1; i > 0; i--) {
+     let j = Math.floor(Math.random() * (i + 1));
+     let temp = array[i];
+     array[i] = array[j];
+     array[j] = temp;
+ }
+}
 
+shuffleNodeList(imgElements);
 
 function setImagesToCards() {
   // Input: No Input
@@ -41,6 +52,7 @@ function setImagesToCards() {
   // Behaviour: Creates an array with all card containers elements, then a loop
   // is created to add ONE img element into each card container.
   const allCards = document.querySelectorAll(".card");
+
 
   for (let card of allCards) {
     card.innerHTML = imgElements.pop();
@@ -106,14 +118,14 @@ function createEndScreen() {
 }
 
 function checkForEndGame() {
-  if (correctPairs === 2) {
+  if (correctPairs === 7) {
     clearInterval(myTimer);
     const elapsedTime = Math.round((new Date() - startTime) / 1000);
     setTimeout( function (){if (confirm(`Congratulations! Your time was ${elapsedTime} seconds. You made ${moves} moves!
              You got ${starRating}!.
              Want to play again?`)) {
                location.reload();
-             }}, 1000);
+             }}, 500);
     }
   else {
     correctPairs += 1;

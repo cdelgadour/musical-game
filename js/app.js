@@ -1,10 +1,3 @@
-/*
- * Create a list that holds all of your cards
- */
-
-// TODO:
-// 3. Viewports!!
-
 let startTime = new Date();
 let timer = document.querySelector(".timer");
 const reloadButton = document.querySelector(".fa.fa-repeat");
@@ -13,8 +6,10 @@ let starRating = "3 stars";
 const moveDisplay = document.querySelector(".moves");
 let moves = 0;
 let correctPairs = 0;
+let myTimer = window.setInterval(updateTimer, 1000);
 let firstCard, secondCard;
 let flippedCards = false;
+const cardDeck = document.querySelector(".deck");
 const imgElements = ["<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"accordion card-image\"></img>",
                    "<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"accordion card-image\"></img>",
                    "<img src=\"img/bongo.jpg\" alt=\"bongo\" class=\"bongo card-image\"></img>",
@@ -44,35 +39,18 @@ function shuffleNodeList(array) {
  }
 }
 
-shuffleNodeList(imgElements);
-
+// @description Appends an img element to an element with .card class
 function setImagesToCards() {
-  // Input: No Input
-  // Output: No Output
-  // Behaviour: Creates an array with all card containers elements, then a loop
-  // is created to add ONE img element into each card container.
   const allCards = document.querySelectorAll(".card");
-
-
   for (let card of allCards) {
     card.innerHTML = imgElements.pop();
   }
 }
 
-// function flipCard(evt) {
-//   let cardImage = evt.target;
-//   if (evt.target.nodeName.toLowerCase() === "li") {
-//     console.log(evt.target);
-//     cardImage.classList.toggle("show", true);
-//   }
-// }
-
 function updateMoveCounter() {
   moves += 1;
   moveDisplay.innerText = moves;
-  // shinyStars[0].style.visibility("hidden");
   updateStarRating(moves);
-  // timer.innerText = `Hello ${moves}`;
 }
 
 function updateTimer() {
@@ -80,10 +58,13 @@ function updateTimer() {
   var currentTime = Math.round((time-startTime)/1000)
   timer.innerText = `Timer: ${currentTime} second(s)`;
 }
-
-let myTimer = window.setInterval(updateTimer, 1000);
-
+/**
+*@description updates the Star rating of the user each time a move is made
+*@param {number} moveNumber - Counter for the number of moves made.
+*/
 function updateStarRating(moveNumber) {
+  // This function is called each time a move is made. The variable moves keeps the counter.
+  // If it exceeds a certain number, one of the stars is hidden and the starRating decreases
   if (moves == 20) {
     shinyStars[2].style.visibility = "hidden";
     starRating = "2 stars";
@@ -93,12 +74,19 @@ function updateStarRating(moveNumber) {
     starRating = "1 star";
   }
 }
-
+/**
+@description Toggles the .show class to make a card visible
+@param {object} image - card container element
+*/
 function flipCard(image) {
   image.classList.toggle("show",true);
   updateMoveCounter();
 }
-
+/**
+@description Validates if the two cards are the same.
+@param {object} cardOne
+@param {object} cardTwo
+*/
 function cardValidation(cardOne, cardTwo){
   let cardOneClass = cardOne.querySelector("img");
   let cardTwoClass = cardTwo.querySelector("img");
@@ -113,92 +101,48 @@ function cardValidation(cardOne, cardTwo){
   }
 }
 
-function createEndScreen() {
-
-}
-
 function checkForEndGame() {
+  // correctPairs keeps the counter of pair of cards found. Once it reaches 7, the game is over.
   if (correctPairs === 7) {
     clearInterval(myTimer);
     const elapsedTime = Math.round((new Date() - startTime) / 1000);
     setTimeout( function (){if (confirm(`Congratulations! Your time was ${elapsedTime} seconds. You made ${moves} moves!
-             You got ${starRating}!.
+             You got ${starRating}!
              Want to play again?`)) {
                location.reload();
              }}, 500);
     }
+
+  // If the correctPairs is less than 7, 1 is added to the variable.
   else {
     correctPairs += 1;
   }
 }
 
-function checkForSameCard(pepe) {
-  if (pepe.classList.contains("active-card")) {
-    return false;
-  }
-  else return true;
-}
+shuffleNodeList(imgElements);
 
 setImagesToCards();
-
-const cardDeck = document.querySelector(".deck");
-// cardDeck.addEventListener("click", flipCard);
 
 reloadButton.addEventListener("click", function(){
   location.reload();
 })
 
 cardDeck.addEventListener("click", function(evt){
+  // Verifies if the target element is a li element
   if (evt.target.nodeName.toLowerCase() === "li") {
   let activeCard = evt.target;
   flipCard(activeCard);
+  // flippedCards is a boolean. It is true if a card is currently flipped, otherwise it is false.
   if (flippedCards) {
-    // alert(flippedCards);
+      // Assigns the activeCard to a variable secondCard for validation
       secondCard = activeCard;
       cardValidation(firstCard, secondCard);
+      // After two cards are validated, flippedCards returns to false
       flippedCards = false;
-
-    }
+  }
   else {
-    // alert(flippedCards);
     firstCard = activeCard;
     flippedCards = true;
-    // alert(flippedCards);
+      }
   }
-}
 });
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-// function shuffle(array) {
-//     var currentIndex = array.length, temporaryValue, randomIndex;
-//
-//     while (currentIndex !== 0) {
-//         randomIndex = Math.floor(Math.random() * currentIndex);
-//         currentIndex -= 1;
-//         temporaryValue = array[currentIndex];
-//         array[currentIndex] = array[randomIndex];
-//         array[randomIndex] = temporaryValue;
-//     }
-//
-//     return array;
-// }
-
-
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */

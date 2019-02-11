@@ -1,20 +1,28 @@
-# Memory Game Project
+# Musical Game Project
 
 ## Table of Contents
 
-* [Instructions](#instructions)
-* [Contributing](#contributing)
+* [Overview](#overview)
+* [Files](#files)
 
-## Instructions
+## Overview
 
-The starter project has some HTML and CSS styling to display a static version of the Memory Game project. You'll need to convert this project from a static project to an interactive one. This will require modifying the HTML and CSS files, but primarily the JavaScript file.
+The Musical Game Project is an online Memory Game where the objective is to guess where
+the identical pair of cards are hidden. The game is won once you flip all pairs of cards.
 
-To get started, open `js/app.js` and start building out the app's functionality
+At any time, you can see all the moves you have made and the time you have been playing.
+You will get a star rating ranging from 1 to 3 stars depending on how many moves
+it takes you to win the game.
 
-For specific, detailed instructions, look at the project instructions in the [Udacity Classroom](https://classroom.udacity.com/me).
+No installation is required. The game can be played in a web browser.
 
-## Contributing
+## Files
 
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
+/css folder contains all the stylesheets of the game depending on the viewport. App.css is the main
+stylesheet, mobile.css and laptop.css are made for mobile and laptops respectively.
 
-For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
+/img contains all the .jpeg used as card images.
+
+/js contains app.js which is all the javascript code used on the game.
+
+index.html is the main html page.

@@ -28,9 +28,6 @@ const imgElements = ["<img src=\"img/accordion.jpg\" alt=\"accordion\" class=\"a
                    "<img src=\"img/trumpet.jpg\" alt=\"trumpet\" class=\"trumpet card-image\"></img>"];
 
 function shuffleNodeList(array) {
- /*Durstenfeld Shuffle
- Credits to Scott and Lauren Holst from StackOverflow.com
- https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array*/
  for (let i = array.length - 1; i > 0; i--) {
      let j = Math.floor(Math.random() * (i + 1));
      let temp = array[i];
@@ -39,7 +36,6 @@ function shuffleNodeList(array) {
  }
 }
 
-// @description Appends an img element to an element with .card class
 function setImagesToCards() {
   const allCards = document.querySelectorAll(".card");
   for (let card of allCards) {
@@ -58,10 +54,7 @@ function updateTimer() {
   var currentTime = Math.round((time-startTime)/1000)
   timer.innerText = `Timer: ${currentTime} second(s)`;
 }
-/**
-*@description updates the Star rating of the user each time a move is made
-*@param {number} moveNumber - Counter for the number of moves made.
-*/
+
 function updateStarRating(moveNumber) {
   // This function is called each time a move is made. The variable moves keeps the counter.
   // If it exceeds a certain number, one of the stars is hidden and the starRating decreases
@@ -74,19 +67,12 @@ function updateStarRating(moveNumber) {
     starRating = "1 star";
   }
 }
-/**
-@description Toggles the .show class to make a card visible
-@param {object} image - card container element
-*/
+
 function flipCard(image) {
   image.classList.toggle("show",true);
   updateMoveCounter();
 }
-/**
-@description Validates if the two cards are the same.
-@param {object} cardOne
-@param {object} cardTwo
-*/
+
 function cardValidation(cardOne, cardTwo){
   let cardOneClass = cardOne.querySelector("img");
   let cardTwoClass = cardTwo.querySelector("img");
@@ -119,25 +105,20 @@ function checkForEndGame() {
   }
 }
 
-shuffleNodeList(imgElements);
-
-setImagesToCards();
+//EVENT LISTENERS
 
 reloadButton.addEventListener("click", function(){
   location.reload();
 })
 
 cardDeck.addEventListener("click", function(evt){
-  // Verifies if the target element is a li element
   if (evt.target.nodeName.toLowerCase() === "li") {
   let activeCard = evt.target;
   flipCard(activeCard);
-  // flippedCards is a boolean. It is true if a card is currently flipped, otherwise it is false.
+
   if (flippedCards) {
-      // Assigns the activeCard to a variable secondCard for validation
       secondCard = activeCard;
       cardValidation(firstCard, secondCard);
-      // After two cards are validated, flippedCards returns to false
       flippedCards = false;
   }
   else {
@@ -146,3 +127,8 @@ cardDeck.addEventListener("click", function(evt){
       }
   }
 });
+
+(function() {
+    shuffleNodeList(imgElements);
+    setImagesToCards();
+})();
